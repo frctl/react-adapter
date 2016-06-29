@@ -1,8 +1,11 @@
 'use strict';
 
 require("babel-register")({
-    extensions: [".jsx"],
-    presets: ['react', 'es2015']
+    extensions: ['.jsx'],
+    presets: ['react', 'es2015'],
+    plugins: [
+        'add-module-exports'
+    ]
 });
 
 const Handlebars = require('handlebars');
