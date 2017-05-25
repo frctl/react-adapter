@@ -8,7 +8,7 @@ require("babel-register")({
     ]
 });
 
-const Handlebars = require('handlebars');
+const HandlebarsAdapter = require('@frctl/handlebars');
 const React      = require('react');
 const ReactDOM   = require('react-dom/server');
 const Promise    = require('bluebird');
@@ -18,6 +18,9 @@ class ReactAdapter extends Adapter {
 
     constructor(source, loadPaths) {
         super(null, source);
+
+        // Create a HandlebarsAdapter for rendering layouts
+        this.hbsAdapter = HandlebarsAdapter({}).register(source, source._app);
     }
 
     render(path, str, context){
@@ -29,8 +32,7 @@ class ReactAdapter extends Adapter {
     }
 
     renderLayout(path, str, context){
-        const template = Handlebars.compile(str);
-        return Promise.resolve(template(context));
+        return this.hbsAdapter.render(path, str, context);
     }
 
 }
